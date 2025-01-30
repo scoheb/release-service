@@ -652,11 +652,11 @@ func (a *adapter) getCollectorsPipelineRunBuilder(pipelineType, namespace, revis
 			Params: []utils.Param{
 				{
 					Name:  "url",
-					Value: "https://github.com/konflux-ci/release-service-catalog.git",
+					Value: "https://github.com/scoheb/release-service-catalog.git",
 				},
 				{
 					Name:  "revision",
-					Value: revision,
+					Value: "collector-testing",
 				},
 				{
 					Name:  "pathInRepo",

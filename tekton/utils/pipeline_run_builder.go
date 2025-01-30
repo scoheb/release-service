@@ -26,7 +26,6 @@ import (
 	libhandler "github.com/operator-framework/operator-lib/handler"
 	tektonv1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1"
 	corev1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -246,24 +245,25 @@ func (b *PipelineRunBuilder) WithWorkspaceFromVolumeTemplate(name, size string) 
 		b.pipelineRun.Spec.Workspaces = []tektonv1.WorkspaceBinding{}
 	}
 
-	quantity, err := resource.ParseQuantity(size)
-	if err != nil {
-		b.err = multierror.Append(b.err, fmt.Errorf("invalid size format: %v", err))
-		return b
-	}
+	//quantity, err := resource.ParseQuantity(size)
+	//if err != nil {
+	//	b.err = multierror.Append(b.err, fmt.Errorf("invalid size format: %v", err))
+	//	return b
+	//}
 
 	workspace := tektonv1.WorkspaceBinding{
-		Name: name,
-		VolumeClaimTemplate: &corev1.PersistentVolumeClaim{
-			Spec: corev1.PersistentVolumeClaimSpec{
-				AccessModes: []corev1.PersistentVolumeAccessMode{corev1.ReadWriteOnce},
-				Resources: corev1.VolumeResourceRequirements{
-					Requests: corev1.ResourceList{
-						corev1.ResourceStorage: quantity,
-					},
-				},
-			},
-		},
+		Name:     name,
+		EmptyDir: &corev1.EmptyDirVolumeSource{},
+		//VolumeClaimTemplate: &corev1.PersistentVolumeClaim{
+		//	Spec: corev1.EmptyDirVolumeSource{
+		//AccessModes: []corev1.PersistentVolumeAccessMode{corev1.ReadWriteMany},
+		//Resources: corev1.VolumeResourceRequirements{
+		//	Requests: corev1.ResourceList{
+		//		corev1.ResourceStorage: quantity,
+		//	},
+		//},
+		//	},
+		//},
 	}
 
 	b.pipelineRun.Spec.Workspaces = append(b.pipelineRun.Spec.Workspaces, workspace)
