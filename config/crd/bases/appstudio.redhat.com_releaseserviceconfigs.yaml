@@ -66,6 +66,31 @@ spec:
                   - url
                   type: object
                 type: array
+              OciStorage:
+                description: OciStorage is the OCI storage configuration for pipelines.
+                properties:
+                  default:
+                    description: Default is the default OCI storage location
+                    type: string
+                  ociStorageOverrides:
+                    description: OciStorageOverrides is a map containing the OCI storage
+                      location for specific Pipeline git refs
+                    items:
+                      properties:
+                        ociStorage:
+                          description: OciStorage is the OCI storage location
+                          type: string
+                        pipelineName:
+                          description: Url is the url to the git repo
+                          type: string
+                      required:
+                      - ociStorage
+                      - pipelineName
+                      type: object
+                    type: array
+                required:
+                - default
+                type: object
               debug:
                 description: |-
                   Debug is the boolean that specifies whether or not the Release Service should run

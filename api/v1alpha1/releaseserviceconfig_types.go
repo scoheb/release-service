@@ -38,6 +38,10 @@ type ReleaseServiceConfigSpec struct {
 	// VolumeOverrides is a map containing the volume type for specific Pipeline git refs
 	// +optional
 	EmptyDirOverrides []EmptyDirOverrides `json:"EmptyDirOverrides,omitempty"`
+
+	// OciStorage is the OCI storage configuration for pipelines.
+	// +optional
+	OciStorage OciStorage `json:"OciStorage,omitempty"`
 }
 
 // EmptyDirOverrides defines the values usually set in a PipelineRef using a git resolver.
@@ -53,6 +57,26 @@ type EmptyDirOverrides struct {
 	// PathInRepo is the path within the git repository where the Pipeline definition can be found
 	// +required
 	PathInRepo string `json:"pathInRepo"`
+}
+
+type OciStorage struct {
+	// Default is the default OCI storage location
+	// +required
+	Default string `json:"default"`
+
+	// OciStorageOverrides is a map containing the OCI storage location for specific Pipeline git refs
+	// +optional
+	OciStorageOverrides []OciStorageOverrides `json:"ociStorageOverrides,omitempty"`
+}
+
+type OciStorageOverrides struct {
+	// Url is the url to the git repo
+	// +required
+	PipelineName string `json:"pipelineName"`
+
+	// OciStorage is the OCI storage location
+	// +required
+	OciStorage string `json:"ociStorage"`
 }
 
 // ReleaseServiceConfigStatus defines the observed state of ReleaseServiceConfig.
